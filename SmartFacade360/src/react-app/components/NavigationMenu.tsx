@@ -24,8 +24,8 @@ export default function NavigationMenu() {
     <>
       {/* Menu Button */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all"
+        onClick={() => setIsOpen(true)}
+        className="absolute top-3 left-3 z-50 bg-white/90 backdrop-blur-sm p-2 rounded-full shadow-sm hover:shadow-md transition-all duration-300 group"
       >
         {isOpen ? (
           <X className="w-6 h-6 text-gray-700" />
@@ -40,8 +40,8 @@ export default function NavigationMenu() {
 
       {/* Menu Overlay */}
       {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+        <div
+          className="absolute inset-0 bg-black/50 backdrop-blur-sm z-40"
           onClick={() => {
             setIsOpen(false);
             setShowAccountSettings(false);
@@ -50,10 +50,9 @@ export default function NavigationMenu() {
       )}
 
       {/* Menu Panel */}
-      <div 
-        className={`fixed top-0 left-0 h-full bg-gradient-to-b from-gray-900 to-black shadow-2xl z-40 transition-transform duration-300 overflow-y-auto ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+      <div
+        className={`absolute top-0 left-0 h-full bg-gradient-to-b from-gray-900 to-black shadow-2xl z-40 transition-transform duration-300 overflow-y-auto ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
         style={{ width: '300px' }}
       >
         <div className="p-6 space-y-6 min-h-full flex flex-col">
@@ -73,8 +72,8 @@ export default function NavigationMenu() {
                 <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700">
                   <div className="flex items-center space-x-3 mb-3">
                     {user.google_user_data.picture ? (
-                      <img 
-                        src={user.google_user_data.picture} 
+                      <img
+                        src={user.google_user_data.picture}
                         alt={user.google_user_data.name || 'Usuario'}
                         className="w-12 h-12 rounded-full border-2 border-blue-500"
                       />
@@ -121,17 +120,16 @@ export default function NavigationMenu() {
                 {menuItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = location.pathname === item.path;
-                  
+
                   return (
                     <Link
                       key={item.path}
                       to={item.path}
                       onClick={() => setIsOpen(false)}
-                      className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all ${
-                        isActive
-                          ? 'bg-blue-600 text-white'
-                          : 'text-gray-300 hover:bg-gray-800'
-                      }`}
+                      className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all ${isActive
+                        ? 'bg-blue-600 text-white'
+                        : 'text-gray-300 hover:bg-gray-800'
+                        }`}
                     >
                       <Icon className="w-5 h-5" />
                       <span className="font-medium">{item.label}</span>
@@ -175,13 +173,13 @@ export default function NavigationMenu() {
               {/* User Profile */}
               <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700">
                 <h4 className="text-white font-semibold mb-3">Perfil de Usuario</h4>
-                
+
                 <div className="space-y-3">
                   <div>
                     <p className="text-gray-400 text-sm">Nombre de Usuario:</p>
                     <p className="text-white font-medium">{user.google_user_data.name || 'No disponible'}</p>
                   </div>
-                  
+
                   <div>
                     <p className="text-gray-400 text-sm">Correo Electrónico:</p>
                     <p className="text-white font-medium break-all">{user.email}</p>
@@ -189,8 +187,8 @@ export default function NavigationMenu() {
 
                   {user.google_user_data.picture && (
                     <div className="flex justify-center pt-2">
-                      <img 
-                        src={user.google_user_data.picture} 
+                      <img
+                        src={user.google_user_data.picture}
                         alt="Perfil"
                         className="w-20 h-20 rounded-full border-2 border-blue-500"
                       />
@@ -202,7 +200,7 @@ export default function NavigationMenu() {
               {/* App Information */}
               <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700">
                 <h4 className="text-white font-semibold mb-3">Información de la App</h4>
-                
+
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-400">Versión:</span>
@@ -218,7 +216,7 @@ export default function NavigationMenu() {
               {/* Support Section */}
               <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl p-4 border border-gray-700">
                 <h4 className="text-white font-semibold mb-3">Soporte</h4>
-                
+
                 <div className="space-y-2">
                   <button className="w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors text-sm">
                     Centro de Ayuda

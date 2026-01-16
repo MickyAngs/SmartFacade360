@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { Search, Plus, X, Car, TreePine, Sofa, Lightbulb, Palette, Home, Flower, ShoppingCart, Camera, Table, Armchair, Laptop } from 'lucide-react';
+import { useState, Suspense } from 'react';
+import { Search, Plus, X, Car, TreePine, Sofa, Lightbulb, Palette, Home, Flower, ShoppingCart, Camera, Table, Armchair, Laptop, Eye } from 'lucide-react';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Stage } from '@react-three/drei';
 import type { SceneObject } from '@/shared/types';
 
 interface ObjectCatalogProps {
@@ -92,6 +94,7 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
   const [showAddedOnly, setShowAddedOnly] = useState(false);
+  const [previewObject, setPreviewObject] = useState<any | null>(null);
 
   const categories = ['Todos', ...Object.keys(objectCatalog)];
 
@@ -108,7 +111,7 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
     }
 
     let allObjects: any[] = [];
-    
+
     Object.entries(objectCatalog).forEach(([category, objects]) => {
       if (selectedCategory === 'Todos' || selectedCategory === category) {
         objects.forEach(obj => {
@@ -135,15 +138,15 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
     console.log('ObjectCatalog - handleAddObject llamado con:', objData);
     console.log('ObjectCatalog - show3DView:', show3DView);
     console.log('ObjectCatalog - hasUploadedModels:', hasUploadedModels);
-    
+
     if (!show3DView && !hasUploadedModels) {
       alert('Primero genera la vista 3D o sube un modelo personalizado para agregar objetos');
       return;
     }
-    
+
     // Posición estratégica según el tipo de objeto
     let x, z, y = 0;
-    
+
     if (objData.category === 'Vehículos') {
       // Colocar vehículos en el camino de entrada
       const angle = Math.random() * Math.PI * 0.3 - Math.PI * 0.15; // ±15 grados
@@ -180,10 +183,10 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
       z = Math.sin(angle) * distance;
       y = -1.8;
     }
-    
+
     const position: [number, number, number] = [x, y, z];
     const rotation: [number, number, number] = [0, Math.random() * Math.PI * 2, 0];
-    
+
     // Escala según el tipo de objeto
     let scale: [number, number, number] = [1, 1, 1];
     if (objData.category === 'Vehículos') {
@@ -193,7 +196,7 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
     } else if (objData.category === 'Muebles Exteriores') {
       scale = [0.7, 0.7, 0.7];
     }
-    
+
     const newObject: Omit<SceneObject, 'id'> = {
       name: objData.name,
       category: objData.category,
@@ -201,13 +204,13 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
       rotation,
       scale
     };
-    
+
     console.log('ObjectCatalog - Objeto creado para enviar:', newObject);
     console.log('ObjectCatalog - Llamando onAddObject...');
-    
+
     // Llamar la función callback
     onAddObject(newObject);
-    
+
     console.log('ObjectCatalog - onAddObject llamado exitosamente');
   };
 
@@ -247,11 +250,10 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
               setShowAddedOnly(false);
             }}
             disabled={!show3DView && !hasUploadedModels}
-            className={`flex-shrink-0 px-3 py-2 text-xs font-medium rounded-lg border transition-colors ${
-              selectedCategory === category
-                ? 'border-blue-500 bg-blue-50 text-blue-700'
-                : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-            } ${(!show3DView && !hasUploadedModels) ? 'opacity-50' : ''}`}
+            className={`flex-shrink-0 px-3 py-2 text-xs font-medium rounded-lg border transition-colors ${selectedCategory === category
+              ? 'border-blue-500 bg-blue-50 text-blue-700'
+              : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+              } ${(!show3DView && !hasUploadedModels) ? 'opacity-50' : ''}`}
           >
             {category}
           </button>
@@ -266,11 +268,10 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
         <button
           onClick={() => setShowAddedOnly(!showAddedOnly)}
           disabled={(!show3DView && !hasUploadedModels) || addedObjects.length === 0}
-          className={`px-2 py-1 text-xs font-medium rounded border transition-colors ${
-            showAddedOnly
-              ? 'border-green-500 bg-green-50 text-green-700'
-              : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-          } ${((!show3DView && !hasUploadedModels) || addedObjects.length === 0) ? 'opacity-50' : ''}`}
+          className={`px-2 py-1 text-xs font-medium rounded border transition-colors ${showAddedOnly
+            ? 'border-green-500 bg-green-50 text-green-700'
+            : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+            } ${((!show3DView && !hasUploadedModels) || addedObjects.length === 0) ? 'opacity-50' : ''}`}
         >
           {showAddedOnly ? 'Todo' : 'Agregados'}
         </button>
@@ -292,19 +293,18 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
               return (
                 <div
                   key={`${obj.category}-${obj.name}-${index}`}
-                  className={`flex items-center justify-between p-2 border rounded transition-all ${
-                    obj.added 
-                      ? 'border-green-500 bg-green-50' 
-                      : 'border-gray-200 bg-white hover:bg-gray-50'
-                  }`}
+                  className={`flex items-center justify-between p-2 border rounded transition-all ${obj.added
+                    ? 'border-green-500 bg-green-50'
+                    : 'border-gray-200 bg-white hover:bg-gray-50'
+                    }`}
                 >
                   <div className="flex items-center space-x-2">
                     <div
                       className="w-6 h-6 rounded flex items-center justify-center"
                       style={{ backgroundColor: `${obj.color}20` }}
                     >
-                      <IconComponent 
-                        className="w-3 h-3" 
+                      <IconComponent
+                        className="w-3 h-3"
                         style={{ color: obj.color }}
                       />
                     </div>
@@ -313,8 +313,20 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
                       <p className="text-xs text-gray-500">{obj.category}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center space-x-1">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setPreviewObject(obj);
+                      }}
+                      className="p-1.5 text-gray-500 hover:bg-gray-100 rounded transition-colors"
+                      title="Ver previsualización"
+                    >
+                      <Eye className="w-3 h-3" />
+                    </button>
+
                     {obj.added && showAddedOnly && obj.id ? (
                       <button
                         onClick={() => onRemoveObject(obj.id!)}
@@ -333,9 +345,8 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
                           handleAddObject(obj);
                         }}
                         disabled={!show3DView && !hasUploadedModels}
-                        className={`p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors ${
-                          (!show3DView && !hasUploadedModels) ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
-                        }`}
+                        className={`p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors ${(!show3DView && !hasUploadedModels) ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105'
+                          }`}
                         title={(show3DView || hasUploadedModels) ? "Agregar a la escena" : "Primero genera la vista 3D o sube un modelo"}
                       >
                         <Plus className="w-3 h-3" />
@@ -394,6 +405,127 @@ export default function ObjectCatalog({ onAddObject, addedObjects, onRemoveObjec
           <p className="text-xs text-yellow-800 font-medium">
             Genera la vista 3D o sube un modelo para agregar objetos
           </p>
+        </div>
+      )}
+
+      {/* Preview Modal */}
+      {previewObject && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xs overflow-hidden relative animate-in fade-in zoom-in duration-200">
+            <button
+              onClick={() => setPreviewObject(null)}
+              className="absolute top-3 right-3 p-1 rounded-full bg-white/80 hover:bg-white transition-colors z-20 shadow-sm"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+
+            <div className="h-64 bg-gradient-to-br from-gray-100 to-slate-200 relative">
+              <Canvas shadows dpr={[1, 2]} camera={{ fov: 50, position: [2, 2, 2] }}>
+                <Suspense fallback={null}>
+                  <Stage environment="city" intensity={0.5} adjustCamera>
+                    {(() => {
+                      const color = previewObject.color;
+                      const category = previewObject.category;
+
+                      if (category === 'Vehículos') {
+                        return (
+                          <group>
+                            <mesh position={[0, 0.3, 0]} castShadow>
+                              <boxGeometry args={[1.5, 0.6, 3]} />
+                              <meshStandardMaterial color={color} roughness={0.3} metalness={0.7} />
+                            </mesh>
+                            <mesh position={[0, 0.6, -0.2]} castShadow>
+                              <boxGeometry args={[1.3, 0.5, 1.5]} />
+                              <meshStandardMaterial color="#333" roughness={0.2} metalness={0.5} />
+                            </mesh>
+                            <mesh position={[0.6, 0, 1]} rotation={[0, 0, Math.PI / 2]}>
+                              <cylinderGeometry args={[0.3, 0.3, 0.2, 16]} />
+                              <meshStandardMaterial color="black" />
+                            </mesh>
+                            <mesh position={[-0.6, 0, 1]} rotation={[0, 0, Math.PI / 2]}>
+                              <cylinderGeometry args={[0.3, 0.3, 0.2, 16]} />
+                              <meshStandardMaterial color="black" />
+                            </mesh>
+                            <mesh position={[0.6, 0, -1]} rotation={[0, 0, Math.PI / 2]}>
+                              <cylinderGeometry args={[0.3, 0.3, 0.2, 16]} />
+                              <meshStandardMaterial color="black" />
+                            </mesh>
+                            <mesh position={[-0.6, 0, -1]} rotation={[0, 0, Math.PI / 2]}>
+                              <cylinderGeometry args={[0.3, 0.3, 0.2, 16]} />
+                              <meshStandardMaterial color="black" />
+                            </mesh>
+                          </group>
+                        );
+                      } else if (category === 'Plantas y Árboles') {
+                        return (
+                          <group>
+                            <mesh position={[0, 1, 0]}>
+                              <coneGeometry args={[0.8, 2, 8]} />
+                              <meshStandardMaterial color={color} roughness={0.8} />
+                            </mesh>
+                            <mesh position={[0, 0, 0]}>
+                              <cylinderGeometry args={[0.2, 0.3, 0.5]} />
+                              <meshStandardMaterial color="#5D4037" />
+                            </mesh>
+                          </group>
+                        );
+                      } else if (category === 'Iluminación') {
+                        return (
+                          <group>
+                            <mesh position={[0, 1.5, 0]}>
+                              <sphereGeometry args={[0.3]} />
+                              <meshStandardMaterial color="#FEF3C7" emissive="#F59E0B" emissiveIntensity={2} toneMapped={false} />
+                            </mesh>
+                            <mesh position={[0, 0.75, 0]}>
+                              <cylinderGeometry args={[0.05, 0.05, 1.5]} />
+                              <meshStandardMaterial color="#1F2937" metalness={0.8} />
+                            </mesh>
+                          </group>
+                        );
+                      } else {
+                        // Default Box
+                        return (
+                          <mesh castShadow>
+                            <boxGeometry args={[1, 1, 1]} />
+                            <meshStandardMaterial color={color} />
+                          </mesh>
+                        );
+                      }
+                    })()}
+                  </Stage>
+                  <OrbitControls autoRotate enableZoom={false} />
+                </Suspense>
+              </Canvas>
+
+              <div className="absolute bottom-2 right-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded backdrop-blur-sm pointer-events-none">
+                Preview 3D
+              </div>
+            </div>
+
+            <div className="p-4 text-center">
+              <h3 className="text-lg font-bold text-gray-900">{previewObject.name}</h3>
+              <p className="text-xs text-gray-500 mb-4">{previewObject.category}</p>
+
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => setPreviewObject(null)}
+                  className="w-full py-2.5 rounded-xl border border-gray-300 text-gray-700 font-semibold text-sm hover:bg-gray-50 transition-colors"
+                >
+                  Cerrar
+                </button>
+                <button
+                  onClick={() => {
+                    handleAddObject(previewObject);
+                    setPreviewObject(null);
+                  }}
+                  disabled={!show3DView && !hasUploadedModels}
+                  className="w-full py-2.5 rounded-xl bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Agregar
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

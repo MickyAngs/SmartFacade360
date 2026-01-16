@@ -20,9 +20,9 @@ function GLTFModel({ url, position, rotation, scale }: any) {
 
   useEffect(() => {
     console.log('GLTFModel - Loading URL:', url);
-    
-    // Verificar que la URL es válida antes de intentar cargarla
-    if (!url || !url.startsWith('blob:')) {
+
+    // Verificar que la URL es válida
+    if (!url || (!url.startsWith('blob:') && !url.startsWith('http'))) {
       console.error('GLTFModel - Invalid URL:', url);
       setError('URL inválida');
       return;
@@ -64,25 +64,7 @@ function GLTFModel({ url, position, rotation, scale }: any) {
   }
 
   // Usar useGLTF hook directamente para cargar el modelo
-  let gltf;
-  try {
-    gltf = useGLTF(url);
-  } catch (error) {
-    console.error('GLTFModel - Error usando useGLTF hook:', error);
-    return (
-      <group ref={meshRef} position={position} rotation={rotation} scale={scale}>
-        <mesh castShadow receiveShadow>
-          <boxGeometry args={[2, 2, 2]} />
-          <meshPhysicalMaterial
-            color="#EF4444"
-            roughness={0.7}
-            metalness={0.3}
-            envMapIntensity={0.8}
-          />
-        </mesh>
-      </group>
-    );
-  }
+  const gltf = useGLTF(url) as any; // Type assertion since types might be loose
 
   const scene = Array.isArray(gltf) ? gltf[0].scene : gltf.scene;
 
@@ -146,7 +128,7 @@ function FBXModel({ url, position, rotation, scale }: any) {
             child.receiveShadow = true;
           }
         });
-        
+
         // Scale down FBX models as they tend to be large
         const box = new THREE.Box3().setFromObject(object);
         const size = box.getSize(new THREE.Vector3());
@@ -155,7 +137,7 @@ function FBXModel({ url, position, rotation, scale }: any) {
           const scaleFactor = 4 / maxSize;
           object.scale.setScalar(scaleFactor);
         }
-        
+
         setModel(object);
       },
       undefined,
@@ -338,7 +320,7 @@ function IFCModel({ url, position, rotation, scale }: any) {
             envMapIntensity={1.0}
           />
         </mesh>
-        
+
         {/* Etiqueta indicando que es IFC */}
         <mesh position={[0, 1.2, 0]} castShadow>
           <boxGeometry args={[2.2, 0.1, 1.7]} />
@@ -349,7 +331,7 @@ function IFCModel({ url, position, rotation, scale }: any) {
             envMapIntensity={1.2}
           />
         </mesh>
-        
+
         {/* Texto flotante */}
         <mesh position={[0, 2.5, 0]}>
           <sphereGeometry args={[0.1, 8, 6]} />
@@ -430,7 +412,7 @@ function RevitModel({ url, position, rotation, scale }: any) {
             envMapIntensity={0.8}
           />
         </mesh>
-        
+
         {/* Detalles arquitectónicos - techo */}
         <mesh position={[0, 1.0, 0]} castShadow receiveShadow>
           <boxGeometry args={[2.7, 0.15, 2.2]} />
@@ -441,7 +423,7 @@ function RevitModel({ url, position, rotation, scale }: any) {
             envMapIntensity={0.8}
           />
         </mesh>
-        
+
         {/* Detalles adicionales - cornisas */}
         <mesh position={[0, 0.9, 1.1]} castShadow receiveShadow>
           <boxGeometry args={[2.8, 0.1, 0.1]} />
@@ -459,7 +441,7 @@ function RevitModel({ url, position, rotation, scale }: any) {
             metalness={0.1}
           />
         </mesh>
-        
+
         {/* Ventanas */}
         <mesh position={[1.0, 0.2, 1.05]} castShadow>
           <boxGeometry args={[0.6, 1, 0.1]} />
@@ -481,7 +463,7 @@ function RevitModel({ url, position, rotation, scale }: any) {
             metalness={0.0}
           />
         </mesh>
-        
+
         {/* Indicador Revit flotante */}
         <group position={[0, 2.5, 0]}>
           <mesh>
@@ -524,8 +506,8 @@ export default function CustomModel3D({
     return null;
   }
 
-  // Verificar que la URL del blob es válida
-  if (!modelUrl.startsWith('blob:')) {
+  // Verificar que la URL es válida (blob o http/https)
+  if (!modelUrl.startsWith('blob:') && !modelUrl.startsWith('http')) {
     console.warn('CustomModel3D - Invalid URL format:', modelUrl);
     return null;
   }

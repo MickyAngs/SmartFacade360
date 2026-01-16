@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Upload, X, Check, AlertCircle, Loader2, Box, Zap, ExternalLink } from 'lucide-react';
+import { Upload, X, Check, AlertCircle, Loader2, Box, Zap } from 'lucide-react';
 
 interface ModelUploaderUploadedModel {
   id: string;
@@ -17,9 +17,9 @@ interface ModelUploaderProps {
   onRemoveModel: (id: string) => void;
 }
 
-export default function ModelUploader({ 
-  onModelUpload, 
-  uploadedModels, 
+export default function ModelUploader({
+  onModelUpload,
+  uploadedModels,
   onRemoveModel
 }: ModelUploaderProps) {
   const [isDragging, setIsDragging] = useState(false);
@@ -48,9 +48,9 @@ export default function ModelUploader({
 
   const handleExportToArkio = (model?: ModelUploaderUploadedModel) => {
     if (!model && uploadedModels.length === 0) return;
-    
+
     const modelToExport = model || uploadedModels[0];
-    
+
     // Create download link for the model file
     const link = document.createElement('a');
     link.href = modelToExport.url;
@@ -58,7 +58,7 @@ export default function ModelUploader({
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
+
     // Open Arkio download page
     setTimeout(() => {
       window.open('https://arkio.is/download/', '_blank');
@@ -96,30 +96,30 @@ export default function ModelUploader({
         status: 'uploading'
       };
 
-      console.log('ModelUploader - Creando modelo:', { 
-        id: modelId, 
-        name: file.name, 
-        type: fileType, 
+      console.log('ModelUploader - Creando modelo:', {
+        id: modelId,
+        name: file.name,
+        type: fileType,
         size: file.size,
         url: url.substring(0, 50) + '...'
       });
 
       // Proceso real de carga del archivo
       setUploadProgress(prev => ({ ...prev, [modelId]: 0 }));
-      
+
       try {
         // Simular progreso de carga mientras se procesa el archivo real
         for (let progress = 0; progress <= 90; progress += 15) {
           await new Promise(resolve => setTimeout(resolve, 100));
           setUploadProgress(prev => ({ ...prev, [modelId]: progress }));
         }
-        
+
         // Verificar que el archivo y la URL son válidos
         if (file.size > 0 && url && url.startsWith('blob:')) {
           console.log('ModelUploader - Archivo válido, marcando como ready');
           setUploadProgress(prev => ({ ...prev, [modelId]: 100 }));
           newModel.status = 'ready';
-          
+
           // Mantener referencia al archivo para evitar que se libere
           console.log('ModelUploader - Llamando onModelUpload');
           onModelUpload(newModel);
@@ -133,7 +133,7 @@ export default function ModelUploader({
         newModel.status = 'error';
         onModelUpload(newModel);
       }
-      
+
       setUploadProgress(prev => {
         const newProgress = { ...prev };
         delete newProgress[modelId];
@@ -174,11 +174,10 @@ export default function ModelUploader({
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
-        className={`relative border-2 border-dashed rounded-xl p-6 text-center transition-all ${
-          isDragging
-            ? 'border-purple-500 bg-purple-50'
-            : 'border-gray-300 bg-white hover:border-purple-400 hover:bg-purple-50/30'
-        }`}
+        className={`relative border-2 border-dashed rounded-xl p-6 text-center transition-all ${isDragging
+          ? 'border-purple-500 bg-purple-50'
+          : 'border-gray-300 bg-white hover:border-purple-400 hover:bg-purple-50/30'
+          }`}
       >
         <input
           ref={fileInputRef}
@@ -190,10 +189,9 @@ export default function ModelUploader({
         />
 
         <div className="space-y-2">
-          <Upload className={`w-12 h-12 mx-auto ${
-            isDragging ? 'text-purple-600' : 'text-gray-400'
-          }`} />
-          
+          <Upload className={`w-12 h-12 mx-auto ${isDragging ? 'text-purple-600' : 'text-gray-400'
+            }`} />
+
           <div>
             <p className="text-sm font-medium text-gray-900">
               {isDragging ? 'Suelta los archivos aquí' : 'Arrastra archivos o haz click'}
@@ -246,22 +244,20 @@ export default function ModelUploader({
             {uploadedModels.map((model) => (
               <div
                 key={model.id}
-                className={`flex items-center justify-between p-3 border rounded-lg transition-all ${
-                  model.status === 'ready'
-                    ? 'border-green-200 bg-green-50'
-                    : model.status === 'error'
+                className={`flex items-center justify-between p-3 border rounded-lg transition-all ${model.status === 'ready'
+                  ? 'border-green-200 bg-green-50'
+                  : model.status === 'error'
                     ? 'border-red-200 bg-red-50'
                     : 'border-purple-200 bg-purple-50'
-                }`}
+                  }`}
               >
                 <div className="flex items-center space-x-3 flex-1 min-w-0">
-                  <div className={`flex-shrink-0 w-8 h-8 rounded flex items-center justify-center ${
-                    model.status === 'ready'
-                      ? 'bg-green-100'
-                      : model.status === 'error'
+                  <div className={`flex-shrink-0 w-8 h-8 rounded flex items-center justify-center ${model.status === 'ready'
+                    ? 'bg-green-100'
+                    : model.status === 'error'
                       ? 'bg-red-100'
                       : 'bg-purple-100'
-                  }`}>
+                    }`}>
                     {model.status === 'ready' ? (
                       <Check className="w-4 h-4 text-green-600" />
                     ) : model.status === 'error' ? (
@@ -335,95 +331,6 @@ export default function ModelUploader({
         </div>
       )}
 
-      {/* Platform Compatibility Notice */}
-      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-lg p-3">
-        <h4 className="font-semibold text-blue-900 text-xs mb-2">💻 Compatibilidad Multiplataforma</h4>
-        <div className="space-y-1 text-xs text-blue-800">
-          <p>✅ <strong>PC/Desktop:</strong> Visualización 3D completa - Todos los formatos</p>
-          <p>✅ <strong>Móvil:</strong> 3D todos los formatos, AR solo GLB/GLTF</p>
-        </div>
-      </div>
-
-      {/* Optional Arkio - Collapsed */}
-      {uploadedModels.length > 0 && uploadedModels.some(m => m.type !== 'glb' && m.type !== 'gltf') && (
-        <details className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-          <summary className="cursor-pointer text-xs text-purple-900 font-medium flex items-center space-x-2">
-            <Zap className="w-3 h-3" />
-            <span>Herramienta profesional externa (opcional)</span>
-          </summary>
-          <div className="mt-2">
-            <button
-              onClick={() => handleExportToArkio()}
-              className="w-full flex items-center justify-center space-x-2 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-medium transition-colors"
-            >
-              <span>Exportar a Arkio VR</span>
-              <ExternalLink className="w-3 h-3" />
-            </button>
-          </div>
-        </details>
-      )}
-
-      {/* Help Text */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-        <h4 className="font-semibold text-blue-900 text-xs mb-1">Formatos Soportados</h4>
-        <ul className="text-xs text-blue-800 space-y-1">
-          <li><strong>🎯 .glb/.gltf</strong> - Para Realidad Aumentada</li>
-          <li><strong>🏗️ .rvt/.rfa/.rte/.rtc</strong> - Archivos Autodesk Revit</li>
-          <li><strong>📦 .obj/.fbx</strong> - Modelos 3D (Wavefront/Autodesk)</li>
-          <li><strong>🏢 .ifc</strong> - Industry Foundation Classes (BIM)</li>
-        </ul>
-        <div className="mt-2 pt-2 border-t border-blue-200">
-          <p className="text-xs text-blue-700 font-medium">🏠 Tu modelo reemplaza la casa principal en el centro</p>
-        </div>
-      </div>
-
-      {/* Format Compatibility Notice */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-3">
-        <h4 className="font-semibold text-blue-900 text-xs mb-2">🎯 Compatibilidad de Formatos</h4>
-        
-        <div className="space-y-2">
-          {/* AR Compatible */}
-          <div className="bg-green-50 border border-green-200 rounded-lg p-2">
-            <p className="text-xs font-semibold text-green-900 mb-1">✅ Realidad Aumentada (AR)</p>
-            <p className="text-xs text-green-800">
-              <strong>.glb, .gltf</strong> - Funcionan en móviles iOS/Android
-            </p>
-          </div>
-          
-          {/* 3D Viewer Only */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-2">
-            <p className="text-xs font-semibold text-blue-900 mb-1">👁️ Solo Visualización 3D</p>
-            <p className="text-xs text-blue-800 mb-1">
-              <strong>.obj, .fbx, .rvt, .ifc</strong> - Perfectos para ver en 3D
-            </p>
-            <p className="text-xs text-blue-700">
-              Estos formatos NO soportan AR por limitaciones de los navegadores móviles
-            </p>
-          </div>
-          
-          {/* Conversion Options */}
-          <div className="bg-purple-50 border border-purple-200 rounded-lg p-2">
-            <p className="text-xs font-semibold text-purple-900 mb-1">🔄 Para convertir a AR:</p>
-            <div className="text-xs text-purple-800 space-y-1">
-              <p><strong>FBX/OBJ → GLB:</strong> Blender (gratuito), Maya, 3ds Max</p>
-              <p><strong>Herramientas online:</strong> gltf.report, fbx2gltf.com</p>
-              <p><strong>RVT → GLB:</strong> Exportar desde Revit como FBX, luego convertir</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-center">
-        <div className="w-4 h-4 text-green-600 mx-auto mb-1 flex items-center justify-center">
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-        </div>
-        <p className="text-xs text-green-800 font-medium">
-          🏠 Tu archivo REEMPLAZA completamente la casa generada
-        </p>
-        <p className="text-xs text-green-700 mt-1">
-          ✨ Para AR sube archivos .glb o .gltf
-        </p>
-      </div>
     </div>
   );
 }

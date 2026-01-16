@@ -19,7 +19,7 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
 
   const handleExportToArkio = () => {
     if (!modelUrl || !modelName) return;
-    
+
     // Create a download link for the model file
     const link = document.createElement('a');
     link.href = modelUrl;
@@ -27,7 +27,7 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    
+
     // Open Arkio.is in new tab with instructions
     setTimeout(() => {
       window.open('https://arkio.is/download/', '_blank');
@@ -41,22 +41,22 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
     const loadModelViewer = async () => {
       if (!document.querySelector('script[src*="model-viewer"]')) {
         console.log('ARViewer - Loading model-viewer script...');
-        
+
         const script = document.createElement('script');
         script.type = 'module';
         script.src = 'https://unpkg.com/@google/model-viewer@3.3.0/dist/model-viewer.min.js';
-        
+
         script.onload = () => {
           console.log('ARViewer - Model-viewer loaded successfully');
           setModelViewerLoaded(true);
         };
-        
+
         script.onerror = (error) => {
           console.error('ARViewer - Error loading model-viewer:', error);
           setError('Error cargando visor 3D');
           setIsLoading(false);
         };
-        
+
         document.head.appendChild(script);
       } else {
         console.log('ARViewer - Model-viewer already loaded');
@@ -73,20 +73,20 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
     const checkARSupport = async () => {
       console.log('ARViewer - Checking AR support...');
       setIsLoading(true);
-      
+
       try {
         // Simplified AR detection for mobile devices
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         const isIOSSafari = /Safari/i.test(navigator.userAgent) && /iPhone|iPad|iPod/i.test(navigator.userAgent) && !/CriOS|FxiOS/i.test(navigator.userAgent);
         const isAndroidChrome = /Chrome/i.test(navigator.userAgent) && /Android/i.test(navigator.userAgent);
-        
+
         console.log('ARViewer - Device check:', {
           isMobile,
           isIOSSafari,
           isAndroidChrome,
           userAgent: navigator.userAgent
         });
-        
+
         // Check for WebXR support
         let hasWebXR = false;
         try {
@@ -97,22 +97,22 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
         } catch (webxrError) {
           console.log('ARViewer - WebXR not available:', webxrError);
         }
-        
+
         const arSupported = hasWebXR || (isMobile && (isIOSSafari || isAndroidChrome));
-        
+
         console.log('ARViewer - AR support result:', arSupported);
         setIsARSupported(arSupported);
-        
+
         if (!arSupported) {
           console.log('ARViewer - AR not supported, showing fallback');
         }
-        
+
       } catch (error) {
         console.error('ARViewer - Error checking AR support:', error);
         setIsARSupported(false);
         setError('Error verificando soporte AR');
       }
-      
+
       setIsLoading(false);
     };
 
@@ -196,7 +196,7 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
               <p className="text-gray-600 text-sm mb-4">
                 Archivo actual: <span className="font-semibold uppercase">{modelType}</span>
               </p>
-              
+
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-3">
                 <h4 className="font-semibold text-yellow-900 text-sm mb-2">
                   {modelType === 'revit' && '🏗️ Archivos Revit'}
@@ -206,16 +206,16 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
                 </h4>
                 <p className="text-xs text-yellow-800 mb-2">
                   Los archivos <strong>.{
-                    modelType === 'revit' ? 'rvt, .rfa, .rte, .rtc' : 
-                    modelType === 'fbx' ? 'fbx (Autodesk/Maya)' :
-                    modelType
+                    modelType === 'revit' ? 'rvt, .rfa, .rte, .rtc' :
+                      modelType === 'fbx' ? 'fbx (Autodesk/Maya)' :
+                        modelType
                   }</strong> se pueden visualizar perfectamente en 3D en el diseñador principal, pero <strong>no son compatibles con Realidad Aumentada</strong> en navegadores móviles.
                 </p>
                 <p className="text-xs text-yellow-700">
                   Esta es una limitación técnica de iOS Safari y Android Chrome, que solo soportan formatos WebXR nativos.
                 </p>
               </div>
-              
+
               <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                 <h4 className="font-semibold text-green-900 text-sm mb-2">✅ Para usar AR necesitas:</h4>
                 <ul className="text-xs text-green-800 space-y-1 text-left">
@@ -232,7 +232,7 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
                   </ul>
                 </div>
               </div>
-              
+
               {/* Optional Arkio Export - Collapsed by default */}
               <details className="bg-purple-50 border border-purple-200 rounded-lg p-3">
                 <summary className="cursor-pointer text-xs text-purple-900 font-medium flex items-center space-x-2">
@@ -263,7 +263,7 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
                   Tu dispositivo no es compatible con AR
                 </p>
               </div>
-              
+
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
                 <h4 className="font-semibold text-blue-900 text-sm mb-2">Dispositivos compatibles:</h4>
                 <ul className="text-xs text-blue-800 space-y-1">
@@ -320,8 +320,12 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
                         auto-rotate
                         shadow-intensity="1"
                         environment-image="neutral"
-                        exposure="1"
-                        shadow-softness="0.75"
+                        tone-mapping="commerce"
+                        exposure="1.2"
+                        shadow-softness="1"
+                        min-camera-orbit="auto auto auto"
+                        max-camera-orbit="auto auto auto"
+                        interpolation-decay="200"
                         style="width: 100%; height: 280px; background-color: #f3f4f6; border-radius: 0.5rem;"
                         loading="eager"
                       >
@@ -354,23 +358,23 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
                   <Smartphone className="w-4 h-4 mr-2" />
                   Instrucciones AR
                 </h4>
-                
+
                 <div className="grid grid-cols-1 gap-3 text-sm">
                   <div className="flex items-start space-x-3">
                     <div className="bg-purple-200 text-purple-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
                     <p className="text-purple-800">Toca el botón "Ver en AR" en el modelo</p>
                   </div>
-                  
+
                   <div className="flex items-start space-x-3">
                     <div className="bg-purple-200 text-purple-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
                     <p className="text-purple-800">Permite el acceso a la cámara cuando se solicite</p>
                   </div>
-                  
+
                   <div className="flex items-start space-x-3">
                     <div className="bg-purple-200 text-purple-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
                     <p className="text-purple-800">Apunta a una superficie plana y bien iluminada</p>
                   </div>
-                  
+
                   <div className="flex items-start space-x-3">
                     <div className="bg-purple-200 text-purple-800 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold flex-shrink-0">4</div>
                     <p className="text-purple-800">Espera a que aparezca el modelo en tu espacio</p>
@@ -387,7 +391,7 @@ export default function ARViewer({ isOpen, onClose, modelUrl, modelType, modelNa
                   </h4>
                   <p className="text-xs text-green-800">Compatible con AR</p>
                 </div>
-                
+
                 <div className="bg-green-50 border border-green-200 rounded-lg p-3">
                   <h4 className="font-semibold text-green-900 text-sm mb-2 flex items-center">
                     <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>

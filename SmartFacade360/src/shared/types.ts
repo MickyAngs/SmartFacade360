@@ -2,7 +2,7 @@ import z from "zod";
 
 export const ArchitecturalStyleSchema = z.enum([
   'Minimalista',
-  'Industrial', 
+  'Industrial',
   'Clásico Mediterráneo',
   'Biofílico',
   'Contemporáneo',
@@ -11,16 +11,7 @@ export const ArchitecturalStyleSchema = z.enum([
   'Moderno Escandinavo'
 ]);
 
-export const MaterialSchema = z.enum([
-  'Ladrillo Visto',
-  'Hormigón Texturizado',
-  'Madera Compuesta',
-  'Vidrio',
-  'Piedra Natural',
-  'Metal Corten',
-  'Fibrocemento',
-  'Concreto Aparente'
-]);
+export const MaterialSchema = z.string();
 
 export const RoofTypeSchema = z.enum([
   'A Dos Aguas',
@@ -69,7 +60,7 @@ export const PropertyModelSchema = z.enum([
 export const FacadeDesignSchema = z.object({
   propertyModel: PropertyModelSchema,
   architecturalStyle: ArchitecturalStyleSchema,
-  material: MaterialSchema,
+  material: z.string(),
   accentColor: AccentColorSchema,
   roofType: RoofTypeSchema.optional(),
   windowStyle: WindowStyleSchema.optional(),
@@ -77,7 +68,7 @@ export const FacadeDesignSchema = z.object({
 });
 
 export type ArchitecturalStyle = z.infer<typeof ArchitecturalStyleSchema>;
-export type Material = z.infer<typeof MaterialSchema>;
+export type Material = string;
 export type RoofType = z.infer<typeof RoofTypeSchema>;
 export type WindowStyle = z.infer<typeof WindowStyleSchema>;
 export type ExteriorFeature = z.infer<typeof ExteriorFeatureSchema>;
