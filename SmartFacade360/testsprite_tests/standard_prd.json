@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "project": "SmartFacade360",
+    "date": "2026-01-13",
+    "prepared_by": "Software Development Manager"
+  },
+  "product_overview": "SmartFacade360 is a cutting-edge architectural visualization platform that enables immersive 3D interaction with building facades, real-time material customization, environmental impact analytics, and augmented reality visualization, all integrated within a secure and user-friendly web interface.",
+  "core_goals": [
+    "Provide high-fidelity 3D orbital visualization of architectural facades with precise user controls.",
+    "Enable seamless real-time customization of facade materials from a live connected database.",
+    "Deliver live eco-sustainability impact analytics to support data-driven decision making.",
+    "Facilitate augmented reality experiences for context-aware visualization of architectural models in real environments.",
+    "Securely manage and store user assets including 3D models and session data, ensuring privacy and integrity.",
+    "Support detailed technical specification display for advanced material validation and selection."
+  ],
+  "key_features": [
+    "Interactive 3D Facade Visualization with full 360° orbital camera, zoom, and panning controls.",
+    "Dynamic Material Picker connected to Supabase for instant texture and shader updates without page reloads.",
+    "Eco-Calculator Dashboard displaying real-time KPIs such as Carbon Footprint, Thermal Conductivity, and Sustainability Score with comparative analysis against reference facades.",
+    "AR Quick-Look Module using WebXR and model-viewer for real-world scaled projection with tactile gestures and shadow effects.",
+    "Tech Specs Viewer presenting detailed metadata on selected materials including technology transfer summaries, patents, and certifications.",
+    "Secure Asset Management backend using Supabase storage buckets with Role Level Security and time-limited signed URLs for intellectual property protection.",
+    "Telemetry Logging of user interactions such as material selection and AR activation for validation and analytics.",
+    "Support for uploading local 3D model files (.obj) for visualization within the 3D viewer."
+  ],
+  "user_flow_summary": [
+    "User logs in and accesses their personalized project dashboard.",
+    "User uploads or selects a 3D architectural facade model for inspection.",
+    "User interacts with the 3D viewport to orbit, zoom, and pan around the model for detailed examination.",
+    "User selects facade components via interactive hover and click to customize materials.",
+    "Upon material selection, the system updates the 3D model textures in real time and refreshes analytics data.",
+    "User views updated eco-sustainability impact metrics on the dashboard reflecting material changes.",
+    "User explores detailed technical specs for selected materials to validate choices.",
+    "User activates the AR Quick-Look to project the model into their real environment using a mobile device camera.",
+    "User session and customization data are securely saved and can be retrieved on return visits.",
+    "Telemetry events of user actions are logged for further analysis and quality assurance."
+  ],
+  "validation_criteria": [
+    "3D viewer supports smooth and precise orbital controls with no rendering glitches.",
+    "Material changes occur instantaneously with no page reloads and sync correctly with analytics dashboard.",
+    "Eco-Calculator accurately recalculates KPIs and updates visualizations on material changes.",
+    "AR functionality activates camera, detects planes, and allows manipulation of the model with responsive touch gestures.",
+    "Tech Specs Viewer shows accurate and comprehensive metadata consistent with database entries.",
+    "File upload mechanism accepts .obj files and renders them correctly in the viewer.",
+    "User authentication securely links user profiles to saved sessions and projects.",
+    "All user interactions are properly logged in Supabase for telemetry with no data loss.",
+    "Assets are stored securely with proper access control and URLs expire as intended to protect IP."
+  ],
+  "code_summary": {
+    "project_name": "SmartFacade360",
+    "frameworks": [
+      "React",
+      "Vite"
+    ],
+    "languages": [
+      "TypeScript"
+    ],
+    "libraries": [
+      "Three.js",
+      "React Three Fiber",
+      "Drei",
+      "Tailwind CSS",
+      "Supabase Client",
+      "Lucide React",
+      "Google Model Viewer"
+    ],
+    "features": [
+      {
+        "name": "3D Facade Visualization",
+        "description": "Interactive 3D viewer for architectural models using React Three Fiber."
+      },
+      {
+        "name": "Material Configuration",
+        "description": "Real-time changing of facade materials and accent colors, fetching data from Supabase."
+      },
+      {
+        "name": "Augmented Reality (AR)",
+        "description": "WebXR-based AR experience using <model-viewer> to place models in the real world."
+      },
+      {
+        "name": "Eco-Calculator Dashboard",
+        "description": "Live calculation and visualization of environmental impact (CO2, Thermal) compared to baseline."
+      },
+      {
+        "name": "Telemetry Logging",
+        "description": "Logging of user interactions (AR activation, material selection) to Supabase for validation logging."
+      },
+      {
+        "name": "Model Upload",
+        "description": "Functionality to upload local .obj files for visualization."
+      }
+    ],
+    "database": "Supabase (PostgreSQL)",
+    "infrastructure": "Vite Dev Server"
+  }
+}

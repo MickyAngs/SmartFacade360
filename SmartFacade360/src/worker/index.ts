@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import {
   exchangeCodeForSessionToken,
   getOAuthRedirectUrl,
-  authMiddleware,
   deleteSession,
   MOCHA_SESSION_TOKEN_COOKIE_NAME,
 } from "@getmocha/users-service/backend";

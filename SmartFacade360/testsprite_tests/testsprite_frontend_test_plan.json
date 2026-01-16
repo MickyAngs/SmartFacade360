@@ -1,0 +1,272 @@
+[
+  {
+    "id": "TC001",
+    "title": "3D Viewer Orbital Controls Functionality",
+    "description": "Verify the 3D facade viewer allows smooth and precise 360° orbital camera controls, including orbit, zoom, and pan functionality without rendering glitches.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Load 3D facade model in the viewer."
+      },
+      {
+        "type": "action",
+        "description": "Perform orbital rotation around the model using mouse drag or touch gestures."
+      },
+      {
+        "type": "assertion",
+        "description": "Check the model orbits smoothly without jitter or lag."
+      },
+      {
+        "type": "action",
+        "description": "Zoom in and out using scroll wheel or pinch gesture."
+      },
+      {
+        "type": "assertion",
+        "description": "Zoom happens smoothly, maintaining model resolution and no clipping occurs."
+      },
+      {
+        "type": "action",
+        "description": "Pan the view horizontally and vertically."
+      },
+      {
+        "type": "assertion",
+        "description": "Panning adjusts the viewport fluidly without graphical glitches."
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Material Picker Real-Time Update",
+    "description": "Ensure that selecting different facade materials from the dynamic material picker updates the 3D model textures and shaders instantly without requiring a page reload.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Select a 3D facade model for customization."
+      },
+      {
+        "type": "action",
+        "description": "Open the material picker and choose a new facade material."
+      },
+      {
+        "type": "assertion",
+        "description": "The 3D model's facade textures update immediately and reflect the selected material with accurate shaders."
+      },
+      {
+        "type": "action",
+        "description": "Switch to another material and observe update."
+      },
+      {
+        "type": "assertion",
+        "description": "Material changes occur without page reload and without artifacts."
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Eco-Calculator KPI Recalculation on Material Change",
+    "description": "Validate that the eco-calculator dashboard recalculates and updates all relevant KPIs (Carbon Footprint, Thermal Conductivity, Sustainability Score) instantly when the facade material is changed.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Load a facade model with an initial material selection."
+      },
+      {
+        "type": "assertion",
+        "description": "Note initial KPIs for carbon footprint, thermal conductivity, and sustainability score."
+      },
+      {
+        "type": "action",
+        "description": "Change facade material using the material picker."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the eco-calculator updates KPIs accurately and reflects expected changes compared to reference facades."
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Tech Specs Viewer Accuracy and Completeness",
+    "description": "Confirm that the Tech Specs Viewer displays detailed metadata for selected materials including technology summaries, patents, and certifications accurately as per database entries.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Select a facade material from the picker."
+      },
+      {
+        "type": "action",
+        "description": "Open the Tech Specs Viewer panel for the selected material."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the display includes all metadata fields: technology transfer summary, patents, certifications, and other technical details."
+      },
+      {
+        "type": "assertion",
+        "description": "Cross-check displayed metadata with the corresponding database entries for accuracy."
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Secure Asset Storage and Access Control",
+    "description": "Verify that user assets including 3D models and session data are securely stored with role level security enforced and access URLs expire after a limited time.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Upload a 3D model file to the user’s asset storage bucket."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm the model is stored securely and accessible by the authorized user."
+      },
+      {
+        "type": "action",
+        "description": "Attempt to access the stored asset URL after expiration time."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm that the signed URL is invalid once expired, preventing unauthorized access."
+      },
+      {
+        "type": "action",
+        "description": "Attempt unauthorized access to storage buckets with different user roles."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify access is denied according to role-level security policies."
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "3D Model File Upload and Rendering",
+    "description": "Ensure the system accepts valid .obj 3D model files uploaded locally and renders them accurately in the 3D viewer.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the model upload section."
+      },
+      {
+        "type": "action",
+        "description": "Upload a valid .obj file representing an architectural facade."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the file upload completes successfully with appropriate user feedback."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the 3D viewer renders the uploaded model correctly with correct geometry and textures."
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Error Handling on Invalid Model Upload",
+    "description": "Confirm the system handles invalid or corrupted model file uploads gracefully by showing appropriate error messages without crashing.",
+    "category": "error handling",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Attempt to upload a corrupted or unsupported file format (e.g., .txt file) in the model upload section."
+      },
+      {
+        "type": "assertion",
+        "description": "System rejects the file with a clear, user-friendly error message."
+      },
+      {
+        "type": "assertion",
+        "description": "No crashes or freezes occur and the user can continue using the application normally."
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "User Session Persistence and Retrieval",
+    "description": "Verify that user session data including selected models, material customizations, and dashboard states are securely saved and properly restored upon user return.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Log in and select a facade model and customize materials."
+      },
+      {
+        "type": "action",
+        "description": "Interact with 3D viewer and eco-dashboard to change settings."
+      },
+      {
+        "type": "action",
+        "description": "Log out or close the application."
+      },
+      {
+        "type": "action",
+        "description": "Log back in with the same user account."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the previous session state including selected model, applied materials, and dashboard settings are restored correctly."
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Telemetry Logging Accuracy and Completeness",
+    "description": "Validate telemetry logging captures all required user interactions such as material selections and AR activations, and that data is correctly stored with no loss.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Perform a series of user actions: change materials, open tech specs, activate AR module."
+      },
+      {
+        "type": "assertion",
+        "description": "Check telemetry logs in Supabase contain corresponding event entries with accurate timestamps and user identifiers."
+      },
+      {
+        "type": "action",
+        "description": "Simulate interrupted network during actions and retry."
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm no telemetry data is lost and all intended events are eventually logged."
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Eco-Calculator Dashboard Comparative Analysis Display",
+    "description": "Ensure that the eco-calculator dashboard correctly displays comparative analysis metrics between the selected facade materials and predefined reference facades.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Select materials with varying sustainability scores."
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the dashboard visualizes KPIs side by side comparing current material against baseline references."
+      },
+      {
+        "type": "assertion",
+        "description": "Check comparative visualizations update dynamically as materials change."
+      }
+    ]
+  }
+]

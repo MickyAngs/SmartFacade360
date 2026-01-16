@@ -1,0 +1,29 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:5173",
+  "loginUser": "superultravito0305@gmail.com",
+  "loginPassword": "VICTOR0305",
+  "executionArgs": {
+    "projectName": "SmartFacade360",
+    "projectPath": "c:\\Users\\Víctor Angulo\\SmartFacade360-2\\SmartFacade360",
+    "testIds": [
+      "TC001",
+      "TC002",
+      "TC003",
+      "TC004",
+      "TC005",
+      "TC006",
+      "TC007",
+      "TC008",
+      "TC009",
+      "TC010"
+    ],
+    "additionalInstruction": "",
+    "envs": {
+      "API_KEY": "sk-user-mvJq6N68Odr2gTiaq56pKh7z6ZtHHftjBKudpBsL8dQZhD0fB5R2lVYT_a-bgJZXaA7PJUH7FYG9RmatEFTWiZD4durb8KfE7I8iaA44cIJaayYQ7iR1JN1niHuXG4JvLoQ"
+    }
+  },
+  "proxy": "http://dfa43cb6-5389-456d-9bf1-593cd493de9f:HKESHwzl0HivaNkshpS1B9UTTbqerkx9@tun.testsprite.com:8080"
+}

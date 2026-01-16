@@ -1,0 +1,38 @@
+1. Explorador Inmersivo 3D (3D Viewport)
+Visualización Orbital de Alta Fidelidad
+
+Descripción Operativa: Integra un motor de renderizado basado en WebGL (Three.js) que permite la manipulación completa del modelo arquitectónico. El usuario tiene control total de cámara orbital (360°), zoom de precisión milimétrica y paneo fluido para inspeccionar detalles estructurales.
+Interacción Directa: Los elementos geométricos de la fachada son interactivos; el sistema detecta "hover" y clics sobre mallas específicas, permitiendo la selección granular de componentes (muros, ventanas, techos) para su personalización individual.
+Beneficio: Permite al arquitecto y al cliente final inspeccionar el proyecto desde cualquier ángulo, eliminando puntos ciegos y asegurando que cada detalle constructivo sea visible antes de la obra.
+2. Selector Dinámico de Pieles (Material Picker)
+Biblioteca Viva de Materiales
+
+Descripción Operativa: Panel lateral conectado en tiempo real a la base de datos de Supabase (materials_library). Al seleccionar una opción (ej. "Madera Accoya" o "Vidrio Onyx"), el motor 3D reemplaza instantáneamente las texturas (mapas de albedo, normales, rugosidad) y shaders del modelo, sin recargas de página.
+Sincronización Total: La aplicación gestiona el estado global del diseño; un cambio visual en el selector dispara automáticamente actualizaciones en los paneles de analítica y ficha técnica.
+Beneficio: Agiliza la toma de decisiones estéticas al permitir comparaciones "A/B" instantáneas entre acabados, visualizando cómo la luz interactúa con diferentes superficies materiales.
+3. Dashboard de Analítica Eco-Sostenible (Live Analytics)
+Calculadora de Impacto en Tiempo Real
+
+Descripción Operativa: Módulo inteligente integrado en la interfaz que monitoriza tres KPIs críticos: Huella de Carbono (kg CO2e/m²), Conductividad Térmica (W/mK) y Puntuación de Sostenibilidad.
+Dinámica de Datos: Al cambiar un material, el dashboard recalcula automáticamente el diferencial respecto a una "Fachada Tradicional de Referencia", mostrando gráficas de barras comparativas y proyectando el ahorro ecológico inmediato.
+Beneficio: Transforma la sostenibilidad de un concepto abstracto a una métrica de negocio tangible, permitiendo al vendedor inmobiliario justificar el valor premium de una propiedad basándose en su eficiencia y bajo impacto ambiental.
+4. Módulo de Realidad Aumentada (AR Quick-Look)
+Proyección Escalar en el Mundo Real
+
+Descripción Operativa: Funcionalidad "click-to-reality" potenciada por WebXR. Al pulsar el botón "Ver en tu Espacio", el sistema activa la cámara del dispositivo móvil, detecta planos horizontales (suelo/mesa) y proyecta el modelo de la fachada a escala.
+Experiencia: Soporta gestos táctiles nativos para rotar y escalar el modelo virtual en el entorno físico del usuario, con sombras dinámicas (shadow-intensity) que anclan visualmente el objeto al suelo.
+Beneficio: Cierra la brecha de imaginación. El cliente puede "colocar" el edificio en el terreno real de construcción o visualizar una maqueta interactiva sobre la mesa de su oficina, validando la volumetría en contexto.
+5. Fichas de Transferencia Tecnológica (Tech Specs Viewer)
+Validación Científica al Alcance
+
+Descripción Operativa: Componente de información expandible (
+TechSheet
+) que despliega metadatos avanzados del material seleccionado. Incluye el "Resumen de Transferencia Tecnológica" (origen de la innovación, patentes bases) y especificaciones técnicas crudas (resistencia, certificaciones Cradle-to-Cradle).
+Integración de Datos: Consume directamente el campo tech_transfer_summary de la base de datos, asegurando que la información mostrada sea siempre fiel a la ficha del fabricante o centro de investigación.
+Beneficio: Dota al prescriptor técnico de argumentos sólidos para defender la elección de materiales innovadores frente a normativas o dudas de ingeniería.
+6. Sistema de Gestión de Activos (Storage & Seeding)
+Infraestructura de Datos Segura
+
+Descripción Operativa: Backend robusto que orquesta la carga, almacenamiento y distribución de activos digitales. Los modelos 3D (.glb, .obj) se alojan en Buckets privados de Supabase con políticas de seguridad (RLS), servidos mediante URLs firmadas temporales para proteger la propiedad intelectual.
+Gestión de Perfiles: Sistema de autenticación que vincula cada diseño y personalización al perfil del usuario (Agente/Arquitecto), permitiendo guardar y recuperar sesiones de trabajo previas.
+Beneficio: Garantiza la integridad y confidencialidad de los proyectos. La carga optimizada de activos asegura que la experiencia sea fluida incluso con modelos complejos, profesionalizando la entrega digital del proyecto.

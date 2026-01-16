@@ -1,0 +1,47 @@
+{
+    "project_name": "SmartFacade360",
+    "frameworks": [
+        "React",
+        "Vite"
+    ],
+    "languages": [
+        "TypeScript"
+    ],
+    "libraries": [
+        "Three.js",
+        "React Three Fiber",
+        "Drei",
+        "Tailwind CSS",
+        "Supabase Client",
+        "Lucide React",
+        "Google Model Viewer"
+    ],
+    "features": [
+        {
+            "name": "3D Facade Visualization",
+            "description": "Interactive 3D viewer for architectural models using React Three Fiber."
+        },
+        {
+            "name": "Material Configuration",
+            "description": "Real-time changing of facade materials and accent colors, fetching data from Supabase."
+        },
+        {
+            "name": "Augmented Reality (AR)",
+            "description": "WebXR-based AR experience using <model-viewer> to place models in the real world."
+        },
+        {
+            "name": "Eco-Calculator Dashboard",
+            "description": "Live calculation and visualization of environmental impact (CO2, Thermal) compared to baseline."
+        },
+        {
+            "name": "Telemetry Logging",
+            "description": "Logging of user interactions (AR activation, material selection) to Supabase for validation logging."
+        },
+        {
+            "name": "Model Upload",
+            "description": "Functionality to upload local .obj files for visualization."
+        }
+    ],
+    "database": "Supabase (PostgreSQL)",
+    "infrastructure": "Vite Dev Server"
+}
