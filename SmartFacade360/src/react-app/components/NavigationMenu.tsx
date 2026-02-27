@@ -1,4 +1,4 @@
-import { Home, Camera, X, User, Settings, LogOut, LogIn, ChevronRight } from 'lucide-react';
+import { Home, Camera, X, User, Settings, LogOut, LogIn, ChevronRight, Activity } from 'lucide-react';
 import { Link, useLocation } from 'react-router';
 import { useState } from 'react';
 import { useAuth } from '@getmocha/users-service/react';
@@ -11,7 +11,8 @@ export default function NavigationMenu() {
 
   const menuItems = [
     { path: '/', label: 'Diseñador', icon: Home },
-    { path: '/ar-studio', label: 'AR Studio', icon: Camera }
+    { path: '/ar-studio', label: 'AR Studio', icon: Camera },
+    { path: '/dashboard/test-uuid', label: 'Command Center (TRL 5)', icon: Activity }
   ];
 
   const handleLogout = async () => {

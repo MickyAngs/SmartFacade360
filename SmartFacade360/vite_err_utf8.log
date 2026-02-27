@@ -1,0 +1,121 @@
+﻿
+> mocha-app@0.0.0 dev
+> vite
+
+Using vars defined in .env
+
+  [32m[1mVITE[22m v7.3.0[39m  [2mready in [0m[1m2762[22m[2m[0m ms[22m
+
+  [32mÔ×£[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+[2m  [32mÔ×£[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+  [32mÔ×£[39m  [1mDebug[22m:   [2m[33mhttp://localhost:[1m5173[22m[2m/__debug[39m[22m
+[2m[32m  Ô×£[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+node.exe : X [ERROR] 
+Could not resolve 
+"react-is"
+En C:\Program 
+Files\nodejs\npm.ps1: 
+29 Carácter: 3
++   & $NODE_EXE 
+$NPM_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (X [ERROR] Cou   
+ ld not resolve "re    
+act-is":String) []    
+, RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+
+    node_modules/rechar
+ts/es6/util/ReactUtils.
+js:3:27:
+      3 Ôöé import { 
+isFragment } from 
+'react-is';
+        ÔòÁ            
+                
+~~~~~~~~~~
+
+  You can mark the 
+path "react-is" as 
+external to exclude it 
+from the bundle, which 
+will remove this error 
+and leave the 
+unresolved path in the 
+bundle.
+
+C:\Users\V├¡ctor Angulo
+\SmartFacade360-2\Smart
+Facade360\node_modules\
+esbuild\lib\main.js:146
+7
+  let error = new 
+Error(text);
+              ^
+
+Error: [31mError 
+during dependency 
+optimization:
+
+[39m[31mX [41;31m[[
+41;97mERROR[41;31m][0
+m [1mCould not 
+resolve "react-is"[0m
+
+    node_modules/rechar
+ts/es6/util/ReactUtils.
+js:3:27:
+[37m      3 Ôöé 
+import { isFragment } 
+from 
+[32m'react-is'[37m;
+        ÔòÁ            
+                
+[32m~~~~~~~~~~[0m
+
+  You can mark the 
+path "react-is" as 
+external to exclude it 
+from the bundle, which 
+will remove this error 
+and leave the 
+unresolved path in the 
+bundle.
+
+
+    at 
+failureErrorWithLog 
+(C:\Users\V├¡ctor Angul
+o\SmartFacade360-2\Smar
+tFacade360\node_modules
+\esbuild\lib\main.js:14
+67:15)
+    at 
+C:\Users\V├¡ctor Angulo
+\SmartFacade360-2\Smart
+Facade360\node_modules\
+esbuild\lib\main.js:926
+:25
+    at 
+C:\Users\V├¡ctor Angulo
+\SmartFacade360-2\Smart
+Facade360\node_modules\
+esbuild\lib\main.js:134
+5:9
+    at process.processT
+icksAndRejections (node
+:internal/process/task_
+queues:105:5) {
+  errors: 
+[Getter/Setter],
+  warnings: 
+[Getter/Setter]
+}
+
+Node.js v22.16.0

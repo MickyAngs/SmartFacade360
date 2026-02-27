@@ -1,0 +1,200 @@
+{
+    "manifest_version": "1.0.0",
+    "project_status": "TRL_6_INDUSTRIAL",
+    "stack": {
+        "frontend": "Next.js 15 (App Router) + TypeScript + TailwindCSS",
+        "backend": "Supabase (PostgreSQL 16 + pgvector)",
+        "orchestrator": "n8n (Self-hosted/Cloud)",
+        "ai_engine": "Tencent Hunyuan (3D) + OpenAI (Analysis)"
+    },
+    "design_system": {
+        "theme": "SpaceX Mission Control",
+        "colors": {
+            "bg_primary": "#0A0F1A",
+            "bg_secondary": "#161922",
+            "accent_teal": "#00F5D4",
+            "accent_emerald": "#00D084",
+            "alert_amber": "#FFB74D",
+            "alert_red": "#FF3B30"
+        },
+        "typography": "Inter (System UI Fallback)"
+    },
+    "database_schema": {
+        "tables": [
+            {
+                "name": "organizations",
+                "rls_enabled": true,
+                "columns": {
+                    "id": "uuid iso_8601 (PK)",
+                    "name": "text",
+                    "tier": "varchar(20) [enterprise, pro, starter]",
+                    "created_at": "timestamptz"
+                }
+            },
+            {
+                "name": "buildings",
+                "rls_enabled": true,
+                "policy": "auth.uid() IN (SELECT user_id FROM organization_members WHERE organization_id = buildings.organization_id)",
+                "columns": {
+                    "id": "uuid (PK)",
+                    "organization_id": "uuid (FK -> organizations.id)",
+                    "name": "text",
+                    "location": "geography(POINT)",
+                    "metadata": "jsonb",
+                    "health_score_current": "numeric(5,2) GENERATED ALWAYS"
+                },
+                "indexes": [
+                    "idx_buildings_org_id",
+                    "idx_buildings_location_gist"
+                ]
+            },
+            {
+                "name": "building_health_metrics",
+                "description": "TimeSeries data for health scores",
+                "rls_enabled": true,
+                "columns": {
+                    "id": "uuid (PK)",
+                    "building_id": "uuid (FK -> buildings.id)",
+                    "timestamp": "timestamptz DEFAULT now()",
+                    "overall_score": "integer CHECK (overall_score BETWEEN 0 AND 100)",
+                    "structural_integrity": "numeric(5,2)",
+                    "energy_efficiency": "numeric(5,2)",
+                    "carbon_footprint_tco2": "numeric(10,2)",
+                    "metrics_json": "jsonb (Detailed sub-metrics)"
+                },
+                "indexes": [
+                    "idx_health_metrics_building_time (building_id, timestamp DESC)"
+                ]
+            },
+            {
+                "name": "geometric_audits",
+                "description": "Stores 3D scan data and embeddings for RAG",
+                "rls_enabled": true,
+                "columns": {
+                    "id": "uuid (PK)",
+                    "building_id": "uuid (FK -> buildings.id)",
+                    "scan_url": "text (url)",
+                    "point_cloud_url": "text (url, .ply/.laz)",
+                    "mesh_url": "text (url, .glb/usdz)",
+                    "semantic_embedding": "vector(1536)",
+                    "pathology_tags": "text[]",
+                    "processed_at": "timestamptz"
+                },
+                "indexes": [
+                    {
+                        "name": "idx_geometric_audits_embedding",
+                        "type": "hnsw",
+                        "method": "cosine",
+                        "columns": [
+                            "semantic_embedding"
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "automation_workflows": {
+        "engine": "n8n",
+        "workflows": [
+            {
+                "id": "wf_3d_reconstruction",
+                "trigger": {
+                    "type": "webhook",
+                    "method": "POST",
+                    "path": "/webhooks/v1/reconstruction/hunyuan"
+                },
+                "input_contract": {
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    "type": "object",
+                    "properties": {
+                        "building_id": {
+                            "type": "string",
+                            "format": "uuid"
+                        },
+                        "source_images": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "format": "uri"
+                            },
+                            "minItems": 3
+                        },
+                        "lidar_correction": {
+                            "type": "boolean",
+                            "default": true
+                        }
+                    },
+                    "required": [
+                        "building_id",
+                        "source_images"
+                    ]
+                },
+                "steps": [
+                    "Validate UUID & RLS",
+                    "Upload to Hunyuan API (Image-to-3D)",
+                    "Poll for GLB completion",
+                    "Post-process GLB (Draco Compression)",
+                    "Generate Embedding (OpenAI text-embedding-3-small) from Metadata + Visual Tags",
+                    "Upsert to Supabase 'geometric_audits'"
+                ]
+            },
+            {
+                "id": "wf_health_score_calc",
+                "trigger": {
+                    "type": "cron",
+                    "schedule": "0 0 * * *"
+                },
+                "logic": "Aggregates daily IoT sensor logs + latest visual audit score to update 'building_health_metrics'"
+            }
+        ]
+    },
+    "mcp_contracts": {
+        "server": "geometric-auditor",
+        "tools": [
+            {
+                "name": "analyze_structural_pathology",
+                "description": "Analyzes a specific region of the 3D mesh for cracks/corrosion",
+                "input_schema": {
+                    "type": "object",
+                    "properties": {
+                        "mesh_id": {
+                            "type": "string"
+                        },
+                        "coordinates": {
+                            "type": "object",
+                            "properties": {
+                                "x": {
+                                    "type": "number"
+                                },
+                                "y": {
+                                    "type": "number"
+                                },
+                                "z": {
+                                    "type": "number"
+                                }
+                            }
+                        },
+                        "radius_meters": {
+                            "type": "number",
+                            "default": 0.5
+                        }
+                    },
+                    "required": [
+                        "mesh_id",
+                        "coordinates"
+                    ]
+                }
+            }
+        ]
+    },
+    "dependencies": {
+        "min_versions": {
+            "node": "20.x",
+            "next": "15.0.0",
+            "react": "19.0.0",
+            "supabase-js": "2.45.0",
+            "three": "0.168.0",
+            "@react-three/fiber": "9.0.0"
+        }
+    }
+}

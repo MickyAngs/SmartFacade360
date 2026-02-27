@@ -1,0 +1,15 @@
+🚀 Iniciando PROTTOM Performance Audit para SmartFacade360...
+✅ Latencia de Ingesta: 125.71 ms
+✅ Velocidad de Inferencia Normativa: 1023.04 ms
+⏳ Levantando navegador headless para extraer Web Vitals y FPS...
+✅ LCP (Largest Contentful Paint): 4224.00 ms
+✅ Tiempo de Interactividad / Carga: 3354.00 ms
+page.evaluate: ReferenceError: __name is not defined
+    at eval (eval at evaluate (:290:30), <anonymous>:1:193)
+    at new Promise (<anonymous>)
+    at eval (eval at evaluate (:290:30), <anonymous>:1:13)
+    at UtilityScript.evaluate (<anonymous>:292:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at measure3DFPS (C:\Users\Víctor Angulo\SmartFacade360-2\SmartFacade360\scripts\app_performance_audit.ts:54:28)
+    at async runAudit (C:\Users\Víctor Angulo\SmartFacade360-2\SmartFacade360\scripts\app_performance_audit.ts:98:17)
+�Desea terminar el trabajo por lotes (S/N)? 

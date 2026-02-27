@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Sparkles, Eye, Loader2, Box, Palette, Home, Settings, Save, ShoppingCart, Upload, BrainCircuit } from 'lucide-react';
+import { Sparkles, Eye, Loader2, Box, Palette, Home, Settings, Save, ShoppingCart, Upload, BrainCircuit, Smartphone, Maximize2, Minimize } from 'lucide-react';
 import { hunyuanService } from '@/services/HunyuanService';
 import Toast from '@/react-app/components/Toast';
 import FacadeViewer3D from '@/react-app/components/FacadeViewer3D';
@@ -7,6 +7,10 @@ import ObjectCatalog from '@/react-app/components/ObjectCatalog';
 import NavigationMenu from '@/react-app/components/NavigationMenu';
 import MaterialPanel from '@/react-app/components/MaterialPanel';
 import ARButton from '@/react-app/components/ARButton';
+import ToggleRAView from '@/react-app/components/ToggleRAView';
+import LibraryDrawer from '@/react-app/components/LibraryDrawer'; // New Import
+import FullscreenToggle from '@/react-app/components/FullscreenToggle'; // New Import
+import { BookOpen } from 'lucide-react'; // New Icon
 import { Material as DbMaterial } from '@/services/MaterialService'; // Rename to avoid conflict with shared/types Material
 import type { ArchitecturalStyle, Material, AccentColor, PropertyModel, RoofType, WindowStyle, ExteriorFeature, SceneObject } from '@/shared/types';
 
@@ -43,6 +47,11 @@ export default function SmartFacade360() {
   const [toastType, setToastType] = useState<'success' | 'error'>('success');
   const [activeTab, setActiveTab] = useState<'editor' | 'tools' | 'upload'>('editor');
   const [show3DView, setShow3DView] = useState(true);
+
+  // AR Panel State
+  const [isRaPanelOpen, setIsRaPanelOpen] = useState(false);
+  const [isLibraryOpen, setIsLibraryOpen] = useState(false); // Library State
+  const [isExpanded, setIsExpanded] = useState(true); // View Expansion State (Start in Mobile)
 
   // New State for AR and Impact Dashboard
   const [selectedModelId, setSelectedModelId] = useState<string | null>(null);
@@ -599,9 +608,7 @@ export default function SmartFacade360() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-blue-50 flex items-center justify-center p-4">
-
-
+    <div className={`min-h-screen transition-all duration-500 flex justify-center items-center ${isExpanded ? 'bg-slate-200 py-4 sm:py-8' : 'bg-slate-50'}`}>
       <Toast
         message={toastMessage || (showToast && activeTab === 'tools'
           ? "¡Cambios guardados exitosamente!"
@@ -614,40 +621,43 @@ export default function SmartFacade360() {
         type={toastType}
       />
 
+      {/* Main Container - Switches between Full-Width and Mobile Device Frame */}
+      <div className={`flex flex-col text-gray-900 bg-slate-50 relative overflow-x-hidden transition-all duration-500 ease-in-out ${isExpanded
+        ? 'w-[375px] h-[812px] max-h-[95vh] rounded-[2rem] sm:rounded-[2.5rem] border-[6px] sm:border-[8px] border-gray-900 shadow-2xl relative custom-scrollbar overflow-y-auto'
+        : 'w-full min-h-screen'
+        }`}>
+        {/* Notch for mobile view */}
+        {isExpanded && <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 sm:w-36 h-2.5 bg-gray-900 rounded-b-lg z-50"></div>}
 
-
-      {/* High Resolution Phone Container - 1440 x 3200 pixels */}
-      <div
-        className="bg-black rounded-3xl p-2 shadow-2xl border-4 border-gray-900 relative overflow-hidden"
-        style={{
-          width: '360px',  // 1440px / 4 for scaling
-          height: '800px', // 3200px / 4 for scaling
-          maxWidth: '360px',
-          maxHeight: '800px',
-          minWidth: '360px',
-          minHeight: '800px'
-        }}
-      >
-        {/* Screen Container */}
-        <div className="bg-white rounded-2xl w-full h-full overflow-hidden relative flex flex-col">
+        <div className={isExpanded ? 'pt-3' : ''}>
+          {/* Top Navigation */}
           <NavigationMenu />
 
-
-          {/* App Content */}
-          <div className="flex-1 bg-gradient-to-br from-slate-100 to-blue-50 h-full overflow-y-auto">
-            {/* Compact Header */}
-            <header className="bg-white shadow-sm border-b border-gray-200">
-              <div className="px-4 py-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <div className="relative">
-                      <Box className="w-6 h-6 text-blue-600" />
-                      <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></div>
-                    </div>
-                    <h1 className="text-base font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                      SmartFacade360
-                    </h1>
+          {/* Header Compacto - Edge to Edge */}
+          <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20">
+            <div className="px-4 py-3 xl:px-8 w-full">
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center space-x-3">
+                  <div className="relative">
+                    <Box className="w-7 h-7 text-teal-600" />
+                    <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-white"></div>
                   </div>
+                  <h1 className="text-lg font-bold tracking-tight text-slate-800">
+                    SmartFacade<span className="text-teal-600 font-black">360</span>
+                  </h1>
+                  <div className="hidden sm:block h-6 w-px bg-gray-200 mx-2"></div>
+
+                  <button
+                    onClick={() => setIsLibraryOpen(true)}
+                    className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-teal-700 bg-teal-50 hover:bg-teal-100 rounded-lg transition-colors border border-teal-200"
+                  >
+                    <BookOpen size={16} />
+                    <span className="hidden sm:inline">Biblioteca de Materiales</span>
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-4">
+                  <FullscreenToggle />
                   <button
                     onClick={() => {
                       localStorage.removeItem('smartFacadeSession');
@@ -655,31 +665,30 @@ export default function SmartFacade360() {
                       setToastType('success');
                       setShowToast(true);
                     }}
-                    className="text-xs text-gray-500 hover:text-red-600 transition-colors"
+                    className="text-sm font-medium text-gray-500 hover:text-red-600 transition-colors"
                     data-testid="logout-button"
                   >
                     Cerrar Sesión
                   </button>
                 </div>
               </div>
-            </header>
+            </div>
+          </header>
 
-            {/* Platform Info Banner */}
-            {/* Removed banner text as per instruction */}
+          {/* Main Content Workspace - Edge to Edge Grid */}
+          <main className={`flex-1 w-full flex flex-col p-4 gap-6 overflow-x-hidden ${!isExpanded ? 'xl:flex-row xl:p-6 bg-slate-50' : 'overflow-y-visible bg-white'}`}>
 
-            {/* Main Content Container */}
-            <div className="px-3 pb-20">
-              {/* 3D Visualizer */}
-              <div className="relative bg-white m-3 rounded-xl shadow-lg overflow-hidden border border-gray-200">
+            {/* Left/Top Area: 3D Visualization */}
+            <div className={`w-full flex flex-col gap-4 ${!isExpanded ? 'xl:w-[65%] 2xl:w-[70%]' : ''}`}>
+
+              {/* Visualizer Container */}
+              <div className={`relative bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex-none ${!isExpanded ? 'flex-1 min-h-[50vh] xl:min-h-[75vh]' : 'min-h-[300px]'}`}>
                 {show3DView || activeTab === 'upload' ? (
-                  <div
-                    className="w-full bg-gradient-to-b from-sky-200 to-green-100 transition-all duration-300 relative"
-                    style={{ height: '45vh' }}
-                  >
+                  <div className="w-full h-full bg-gradient-to-b from-slate-100 to-gray-50 relative">
                     <FacadeViewer3D
                       architecturalStyle={architecturalStyle}
-                      material={dbMaterial ? dbMaterial.name : material} // Use DB material if selected
-                      accentColor={dbMaterial?.hex_color || accentColor.hex} // Use DB color if selected
+                      material={dbMaterial ? dbMaterial.name : material}
+                      accentColor={dbMaterial?.hex_color || accentColor.hex}
                       propertyModel={propertyModel}
                       roofType={roofType}
                       windowStyle={windowStyle}
@@ -697,61 +706,76 @@ export default function SmartFacade360() {
                       selectedModelId={selectedModelId}
                       onSelectModel={setSelectedModelId}
                     />
-
-                    {/* AR Button for Uploaded Models */}
-                    <ARButton modelUrl={selectedModelUrl} modelId={selectedModelId || undefined} />
-
-                    {/* Material Sidebar - Always visible in 3D view */}
-                    <MaterialPanel onMaterialSelect={(mat) => {
-                      setDbMaterial(mat);
-                    }} />
                   </div>
                 ) : (
                   <img
                     src={generateFacadeImage()}
                     alt="Vista previa de fachada 3D"
-                    className="w-full object-cover transition-all duration-300"
-                    style={{ height: '45vh' }}
+                    className="w-full h-full object-cover"
                   />
                 )}
+
+                {/* Mobile Preview Toggle Button */}
+                <button
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  className="absolute bottom-4 right-4 bg-blue-50/90 backdrop-blur-md p-3 rounded-2xl shadow-lg border border-blue-100 text-blue-600 hover:text-blue-700 hover:scale-105 transition-all z-10"
+                  title={!isExpanded ? "Previsualizar todo en Móvil" : "Volver a Vista Completa"}
+                >
+                  {isExpanded ? <Maximize2 size={24} strokeWidth={2.5} /> : <Smartphone size={24} strokeWidth={2.5} />}
+                </button>
               </div>
+            </div>
+
+            {/* Right/Bottom Area: Controls, Settings, Tabs */}
+            <div className={`w-full flex flex-col gap-4 ${!isExpanded ? 'xl:w-[35%] 2xl:w-[30%]' : ''}`}>
 
               {/* Navigation Tabs */}
-              <div className="mx-3 mb-3">
-                <div className="bg-white rounded-xl p-2 shadow-sm border border-gray-200">
-                  <div className="grid grid-cols-3 gap-1">
-                    {[
-                      { id: 'editor', label: 'Configuración', icon: Sparkles },
-                      { id: 'upload', label: 'Archivos', icon: Upload },
-                      { id: 'tools', label: 'Herramientas', icon: Settings }
-                    ].map(({ id, label, icon: Icon }) => (
-                      <button
-                        key={id}
-                        onClick={() => setActiveTab(id as any)}
-                        className={`flex flex-col items-center justify-center p-3 rounded-lg text-sm font-medium transition-all ${activeTab === id
-                          ? 'bg-blue-100 text-blue-700'
-                          : 'text-gray-600 hover:bg-gray-50'
-                          }`}
-                      >
-                        <Icon className="w-5 h-5" />
-                        <span className="text-xs mt-1">{label}</span>
-                      </button>
-                    ))}
-                  </div>
+              <div className="bg-white rounded-xl p-2 shadow-sm border border-gray-200">
+                <div className="grid grid-cols-3 gap-2">
+                  {[
+                    { id: 'editor', label: 'Configurar', icon: Sparkles },
+                    { id: 'upload', label: 'Modelos', icon: Upload },
+                    { id: 'tools', label: 'Suite', icon: Settings }
+                  ].map(({ id, label, icon: Icon }) => (
+                    <button
+                      key={id}
+                      onClick={() => setActiveTab(id as any)}
+                      className={`flex flex-col items-center justify-center p-3 sm:py-4 rounded-xl text-sm font-semibold transition-all ${activeTab === id
+                        ? 'bg-teal-50 text-teal-700 shadow-inner'
+                        : 'text-slate-600 hover:bg-slate-50 border border-transparent hover:border-slate-100'
+                        }`}
+                    >
+                      <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${activeTab === id ? 'text-teal-600' : 'text-slate-500'}`} />
+                      <span className="text-xs sm:text-sm mt-2">{label}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Controls Panel */}
-              <div className="bg-white mx-3 mb-3 rounded-xl shadow-lg border border-gray-200 overflow-hidden transition-all duration-300">
+              {/* Dynamic Controls Panel */}
+              <div className={`bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex-1 flex flex-col ${!isExpanded ? 'min-h-[500px]' : ''}`}>
                 {activeTab === 'editor' && renderUnifiedEditor()}
                 {activeTab === 'upload' && renderUploadTab()}
                 {activeTab === 'tools' && renderToolsTab()}
               </div>
-
             </div>
-          </div>
-        </div>
+          </main>
+
+          {/* Helper text when in mobile frame to exit */}
+          {isExpanded && (
+            <div className="absolute top-2 right-2 text-[10px] text-gray-400 opacity-50 z-50">
+              Vista Móvil
+            </div>
+          )}
+        </div> {/* End of inner frame styling (added pt-6 conditionally) */}
       </div>
+
+      {/* Library Drawer */}
+      <LibraryDrawer isOpen={isLibraryOpen} onClose={() => setIsLibraryOpen(false)}>
+        <MaterialPanel onMaterialSelect={(mat) => {
+          setDbMaterial(mat);
+        }} />
+      </LibraryDrawer>
     </div>
   );
 }

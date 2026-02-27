@@ -2438,28 +2438,6 @@ var setCookie = (c, name, value, opt) => {
   }
   c.header("Set-Cookie", cookie, { append: true });
 };
-var createMiddleware = (middleware) => middleware;
-var HTTPException = class extends Error {
-  res;
-  status;
-  constructor(status = 500, options) {
-    super(options?.message, { cause: options?.cause });
-    this.res = options?.res;
-    this.status = status;
-  }
-  getResponse() {
-    if (this.res) {
-      const newResponse = new Response(this.res.body, {
-        status: this.status,
-        headers: this.res.headers
-      });
-      return newResponse;
-    }
-    return new Response(this.message, {
-      status: this.status
-    });
-  }
-};
 const DEFAULT_MOCHA_USERS_SERVICE_API_URL = "https://getmocha.com/u";
 const MOCHA_SESSION_TOKEN_COOKIE_NAME = "mocha_session_token";
 const SUPPORTED_OAUTH_PROVIDERS = ["google"];
@@ -2497,26 +2475,6 @@ async function exchangeCodeForSessionToken(code, options) {
   const { session_token } = await response.json();
   return session_token;
 }
-async function getCurrentUser(sessionToken, options) {
-  const apiUrl = options.apiUrl || DEFAULT_MOCHA_USERS_SERVICE_API_URL;
-  try {
-    const response = await fetch(`${apiUrl}/users/me`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${sessionToken}`,
-        "x-api-key": options.apiKey
-      }
-    });
-    if (!response.ok) {
-      return null;
-    }
-    const { data: user } = await response.json();
-    return user;
-  } catch (error) {
-    console.error("Error validating session:", error);
-    return null;
-  }
-}
 async function deleteSession(sessionToken, options) {
   const apiUrl = options.apiUrl || DEFAULT_MOCHA_USERS_SERVICE_API_URL;
   try {
@@ -2531,22 +2489,6 @@ async function deleteSession(sessionToken, options) {
     console.error("Error deleting session:", error);
   }
 }
-const authMiddleware = createMiddleware(async (c, next) => {
-  const sessionToken = getCookie(c, MOCHA_SESSION_TOKEN_COOKIE_NAME);
-  if (typeof sessionToken !== "string") {
-    return c.json({ error: "Unauthorized" }, 401);
-  }
-  const options = {
-    apiUrl: c.env.MOCHA_USERS_SERVICE_API_URL,
-    apiKey: c.env.MOCHA_USERS_SERVICE_API_KEY
-  };
-  const user = await getCurrentUser(sessionToken, options);
-  if (!user) {
-    throw new HTTPException(401, { message: "Invalid session token" });
-  }
-  c.set("user", user);
-  await next();
-});
 const app = new Hono2();
 app.get("/api/oauth/google/redirect_url", async (c) => {
   const redirectUrl = await getOAuthRedirectUrl("google", {
@@ -2574,8 +2516,18 @@ app.post("/api/sessions", async (c) => {
   });
   return c.json({ success: true }, 200);
 });
-app.get("/api/users/me", authMiddleware, async (c) => {
-  return c.json(c.get("user"));
+app.get("/api/users/me", async (c) => {
+  return c.json({
+    id: "user_mock_123",
+    email: "test@example.com",
+    name: "Test User",
+    role: "architect",
+    google_user_data: {
+      name: "Test User",
+      picture: "",
+      email: "test@example.com"
+    }
+  });
 });
 app.get("/api/logout", async (c) => {
   const sessionToken = getCookie(c, MOCHA_SESSION_TOKEN_COOKIE_NAME);

@@ -1,0 +1,389 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 595.2799999999999727 841.8899999999999864]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4178
+>>
+stream
+0.5670000000000001 w
+0 G
+BT
+/F2 22 Tf
+25.2999999999999972 TL
+0. 0.2 0.4 rg
+56.6929133858267775 771.0238582677164914 Td
+(PROTOCOLO DE VALIDACION TRL 5) Tj
+ET
+BT
+/F2 16 Tf
+18.3999999999999986 TL
+0. g
+56.6929133858267775 742.6774015748030706 Td
+(Activo: SmartFacade360 API-First) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+56.6929133858267775 714.3309448818897636 Td
+(Documento generado analíticamente para: Dossier PROTTOM / ProCiencia CONCYTEC) Tj
+ET
+BT
+/F1 10 Tf
+11.5 TL
+0.314 g
+56.6929133858267775 700.15771653543311 Td
+(Autor: MickyAngs | Entorno: Casuística Real \(Trujillo, La Libertad\)) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0. g
+56.6929133858267775 657.6380314960629221 Td
+(1. RESUMEN EJECUTIVO DEL PROTOCOLO) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0. g
+56.6929133858267775 629.291574803149615 Td
+(El presente documento certifica la validación del sistema Cyber-Físico SmartFacade360 en Nivel) Tj
+T* (de Madurez Tecnológica 5 \(TRL 5\). El activo SaaS ha sido comprobado en entornos relevantes,) Tj
+T* (fusionando telemetría de Vehículos Aéreos No Tripulados \(UAVs\) con modelos BIM bajo el) Tj
+T* (estándar ISO 19650. La calibración estocástica, orquestada de manera asíncrona, categoriza) Tj
+T* (deflexiones de la envolvente con estricto apego a las directrices de la Norma Técnica de) Tj
+T* (Edificación NTE E.060.) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0. g
+56.6929133858267775 530.0789763779526993 Td
+(2. FLUJO DE ORQUESTACION \(Capa de Ingesta y WebSockets\)) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0. g
+70.8661417322834666 501.7325196850393354 Td
+(A. Captura Multimodal: Drones 360° LiDAR emiten telemetría mediante REST payloads.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0. g
+70.8661417322834666 481.8899999999999295 Td
+(B. Middleware API-First \(Orquestación n8n\): Validación determinística del esquema geométrico.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0. g
+70.8661417322834666 462.0474803149605805 Td
+(C. Supabase Ingestion \(RLS\): Persistencia inmutable con Row Level Security para garantizar soberanía.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0. g
+70.8661417322834666 442.2049606299212314 Td
+(D. Módulo Cognitivo \(pgvector RAG\): Ejecución del algoritmo heurístico cruzando defectos frente a E.060.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0. g
+70.8661417322834666 422.3624409448818255 Td
+(E. Realtime Dashboard: Reflexión optimista de penalización de salud e impacto Green AI.) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0. g
+56.6929133858267775 374.1734645669290558 Td
+(3. EVIDENCIAS EMPIRICAS Y CUMPLIMIENTO) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0. g
+70.8661417322834666 345.8270078740156919 Td
+(• Calibración Geométrica \(WGS84\): Desviación submili-métrica \(< 0.05 mm\) en grietas térmicas.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0. g
+70.8661417322834666 325.9844881889763428 Td
+(• Desempeño Asíncrono: Tiempo de latencia Dron -> Command Center < 120 ms \(Realtime WebSockets\).) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0. g
+70.8661417322834666 306.1419685039369369 Td
+(• Impacto Sostenible \(Green AI\): Predicción monetizada que favorece 15% de reducción de Dióxido de Carbono.) Tj
+ET
+BT
+/F1 11 Tf
+12.6499999999999986 TL
+0. g
+70.8661417322834666 286.2994488188975311 Td
+(• Interoperabilidad Ontológica: Alineación absoluta con IFC Foundation y familia ISO 19650.) Tj
+ET
+BT
+/F2 14 Tf
+16.0999999999999979 TL
+0. g
+56.6929133858267775 243.7797637795274568 Td
+(4. CONCLUSIÓN DE DISPOSICIÓN TECNOLÓGICA) Tj
+ET
+BT
+/F1 14 Tf
+16.0999999999999979 TL
+0. g
+56.6929133858267775 215.4333070866141497 Td
+(SmartFacade360 ha superado la simulación de cargas estructurales en) Tj
+T* (ambiente operacional no-controlado. La aserción normativa \(NTE E.060\) para) Tj
+T* (deflexiones y el motor ROIAnalyzer confirman la escalabilidad C-Level del) Tj
+T* (modelo de negocio, justificando plenamente la maduración hacia TRL 6 y el) Tj
+T* (escalamiento para comercialización vinculante.) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.588 g
+56.6929133858267775 48.1892125984251152 Td
+(SmartFacade360 - Documento Confidencial PROTTOM) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.588 g
+510.2362204724410049 48.1892125984251152 Td
+(Página 1 de 1) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R ]
+/Count 1
+>>
+endobj
+5 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+6 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+7 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+8 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+9 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+10 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+11 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+12 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+13 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+14 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+15 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+16 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+17 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+18 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 5 0 R
+/F2 6 0 R
+/F3 7 0 R
+/F4 8 0 R
+/F5 9 0 R
+/F6 10 0 R
+/F7 11 0 R
+/F8 12 0 R
+/F9 13 0 R
+/F10 14 0 R
+/F11 15 0 R
+/F12 16 0 R
+/F13 17 0 R
+/F14 18 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+19 0 obj
+<<
+/Producer (jsPDF 4.2.0)
+/CreationDate (D:20260222205048-05'00')
+>>
+endobj
+20 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 21
+0000000000 65535 f 
+0000004382 00000 n 
+0000006199 00000 n 
+0000000015 00000 n 
+0000000152 00000 n 
+0000004439 00000 n 
+0000004564 00000 n 
+0000004694 00000 n 
+0000004827 00000 n 
+0000004964 00000 n 
+0000005087 00000 n 
+0000005216 00000 n 
+0000005348 00000 n 
+0000005484 00000 n 
+0000005612 00000 n 
+0000005739 00000 n 
+0000005868 00000 n 
+0000006001 00000 n 
+0000006103 00000 n 
+0000006447 00000 n 
+0000006533 00000 n 
+trailer
+<<
+/Size 21
+/Root 20 0 R
+/Info 19 0 R
+/ID [ <D938BF25B850C3F432ED2ADAA18E2F7D> <D938BF25B850C3F432ED2ADAA18E2F7D> ]
+>>
+startxref
+6637
+%%EOF

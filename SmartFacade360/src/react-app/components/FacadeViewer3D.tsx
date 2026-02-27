@@ -446,13 +446,14 @@ export default function FacadeViewer3D({
 
 
 
+      {/* React 18 / Postprocessing compatibility issue block 
       {performanceMode === 'high' && (
         <EffectComposer>
           <Bloom luminanceThreshold={1} mipmapBlur intensity={0.5} radius={0.4} />
-          {/* <SSAO intensity={0.4} radius={0.1} luminanceInfluence={0.5} /> Disabled to fix NormalPass error */}
           <ToneMapping />
         </EffectComposer>
       )}
+      */}
     </Canvas>
   );
 }

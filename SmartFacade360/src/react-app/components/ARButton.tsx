@@ -10,21 +10,14 @@ import { useSupabaseModelLoader } from '../hooks/useSupabaseModelLoader';
 interface ARButtonProps {
     modelUrl: string | undefined;
     modelId: string | undefined;
+    embeddedMode?: boolean;
 }
 
-export default function ARButton({ modelUrl, modelId }: ARButtonProps) {
+export default function ARButton({ modelUrl, modelId, embeddedMode = false }: ARButtonProps) {
     const viewerRef = useRef<any>(null);
 
     // Resolve Signed URL for AR session
     const signedUrl = useSupabaseModelLoader(modelUrl);
-
-    // Placeholder or Validation logic could go here if needed
-    // const hasValidModel = prepareModelForAR(signedUrl);
-
-    /**
-     * Misión Crítica: Validate model format for AR compatibility.
-     */
-
 
     const handleARClick = () => {
         if (modelId) {
@@ -35,26 +28,51 @@ export default function ARButton({ modelUrl, modelId }: ARButtonProps) {
         }
     };
 
-    // Allow button to render for placeholder testing if no uploaded model
-    // if (!canActivateAR || !signedUrl) return null;
+    // --- EMBEDDED MODE (Inside Side Panel) ---
+    if (embeddedMode) {
+        return (
+            <div className="w-full h-full relative">
+                <model-viewer
+                    ref={viewerRef}
+                    src={signedUrl || 'https://modelviewer.dev/shared-assets/models/Astronaut.glb'}
+                    ar
+                    ar-modes="webxr scene-viewer quick-look"
+                    camera-controls
+                    shadow-intensity="1"
+                    style={{ width: '100%', height: '100%', backgroundColor: '#111827' }}
+                >
+                    <button
+                        slot="ar-button"
+                        onClick={handleARClick}
+                        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white text-black px-4 py-2 rounded-full font-bold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                    >
+                        <Scan size={16} />
+                        <span>Lanzar en Móvil (RA)</span>
+                    </button>
 
+                    <div className="absolute top-4 left-4 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-sm pointer-events-none">
+                        Vista Previa Interactiva
+                    </div>
+                </model-viewer>
+            </div>
+        );
+    }
+
+    // --- LEGACY / FLOATING BUTTON MODE ---
+    // This is now mostly handled by ToggleRAView's trigger button, but kept if needed elsewhere
     return (
         <>
-            <div className="absolute bottom-8 right-8 z-50">
-                <button
-                    onClick={handleARClick}
-                    className="flex items-center gap-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-6 py-3 rounded-full shadow-lg shadow-purple-900/30 transition-all transform hover:scale-105 font-bold"
-                    data-testid="ar-button"
-                >
-                    <Scan size={20} />
-                    <span>Ver en tu Espacio (RA)</span>
-                </button>
+            <div className="hidden"> {/* Force hidden because ToggleRAView handles the trigger now */}
+                {/* 
+                <button ... > ... </button> 
+                Kept in logic but hidden from UI to avoid duplication 
+             */}
             </div>
 
-            {/* Hidden Model Viewer that acts as the AR engine */}
+            {/* Hidden Engine for pure logic cases */}
             <model-viewer
                 ref={viewerRef}
-                src={signedUrl || 'https://modelviewer.dev/shared-assets/models/Astronaut.glb'} // Placeholder for immediate testing
+                src={signedUrl || 'https://modelviewer.dev/shared-assets/models/Astronaut.glb'}
                 ar
                 ar-modes="webxr scene-viewer quick-look"
                 camera-controls
